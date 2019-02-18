@@ -15,7 +15,7 @@ scope = 'user-library-read user-library-modify'
 
 token = util.prompt_for_user_token(args.user, scope)
 
-print(",".join(['Original Artist', 'Original Album', 'Located Type', 'Found Artist', 'Found Album', 'Found Name', 'uri']))
+print(",".join(['Original Artist', 'Original Album', 'Located Type', 'Found Artist', 'Found Album', 'Found Name', 'Number of tracks', 'Release date', 'uri']))
 
 def locate(artist, album):
     found = 0
@@ -26,8 +26,10 @@ def locate(artist, album):
         for a in item['artists']:
             the_artist = "The " + artist
             if a['name'].lower() == artist.lower() or the_artist.lower() == a['name'].lower():
+                #print json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
                 print(",".join([artist, album, 'album',
-                                a['name'], item['name'], item['name'],
+                                a['name'], item['name'], ' ',
+                                str(item['total_tracks']), item['release_date'],
                                 item['uri']]))
                 found = found + 1
 
@@ -39,8 +41,10 @@ def locate(artist, album):
             for a in item['album']['artists']:
                 the_artist = "The " + artist
                 if track.lower() in item['name'].lower() and item['album']['album_type'] == 'album' and (a['name'] == artist or the_artist.lower() == a['name'].lower()):
+                    #print json.dumps(item, sort_keys=True, indent=4, separators=(',', ': '))
                     print(",".join([artist, track, 'song name',
                                     a['name'], item['album']['name'], item['name'],
+                                    str(item['total_tracks']), item['release_date'],
                                     item['uri']]))
                     found = found + 1
 
